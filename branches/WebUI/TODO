@@ -1,0 +1,16 @@
+﻿- add timeout when waiting till the download to finish
+	- announcement rescheduling while torrent is not visible on GFT (needed only when we will support more than one sources?)
+- PtpUploaderInvalidLoginException should just disable the source (if it is ptp it can quit)
+- check pending downloads too when checking for dupes
+- support of relogging, timeouts and retrying in all HTTP requests
+- per source filtering settings
+- limit ratio (and seeding time) on source
+- mininmal web interface
+	- cancel button to stop a torrent from uploading
+- replace pyWHATauto
+	- or at least make it capable of rejoining
+	- and handling custom commands
+- check available space before downloading 
+- automatically switching to imgur if ptpimg is down
+- replace file based communication between irc bot and the uploader (or keep it and add an alternative)
+- store Settings.ini elsewhere
