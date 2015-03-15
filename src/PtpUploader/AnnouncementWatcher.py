@@ -1,17 +1,15 @@
-from Job.JobRunningState import JobRunningState
+import datetime
+import hashlib
+import time
 
+from Job.JobRunningState import JobRunningState
 from Database import Database
 from MyGlobals import MyGlobals
 from Logger import Logger
-from PtpUploaderException import PtpUploaderException
 from ReleaseInfo import ReleaseInfo
 from Settings import Settings
-
-import datetime
-import hashlib
 import os
 import re
-import time
 
 
 class AnnouncementWatcher:

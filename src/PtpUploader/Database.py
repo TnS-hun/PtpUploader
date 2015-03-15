@@ -1,15 +1,13 @@
-from Job.JobRunningState import JobRunningState
-
-from MyGlobals import MyGlobals
-from Settings import Settings
-
-from sqlalchemy import create_engine, exc, or_
-from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
-
 import datetime
 import platform
 import time
+
+from Job.JobRunningState import JobRunningState
+from MyGlobals import MyGlobals
+from Settings import Settings
+from sqlalchemy import create_engine, exc, or_
+from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.ext.declarative import declarative_base
 
 
 class Database:

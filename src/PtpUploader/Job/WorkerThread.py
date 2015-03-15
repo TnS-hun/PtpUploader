@@ -1,12 +1,10 @@
-from Job.JobManager import JobManager
+import threading
 
+from Job.JobManager import JobManager
 from AnnouncementDirectoryWatcher import AnnouncementDirectoryWatcher
 from MyGlobals import MyGlobals
 from PtpUploaderException import *
-
 import sqlalchemy.exc
-
-import threading
 
 
 class WorkerThread(threading.Thread):

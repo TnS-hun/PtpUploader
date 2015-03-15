@@ -1,6 +1,4 @@
 from MyGlobals import MyGlobals
-from PtpUploaderException import PtpUploaderException
-from Settings import Settings
 
 import transmissionrpc
 

@@ -2,7 +2,6 @@ import datetime
 import subprocess
 
 from Job.FinishedJobPhase import FinishedJobPhase
-from Job.JobRunningState import JobRunningState
 from Job.WorkerBase import WorkerBase
 from Tool.MakeTorrent import MakeTorrent
 from Database import Database

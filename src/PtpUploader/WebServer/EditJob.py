@@ -1,6 +1,4 @@
-from Job.FinishedJobPhase import FinishedJobPhase
 from Job.JobRunningState import JobRunningState
-from Job.JobStartMode import JobStartMode
 from WebServer import app
 from WebServer.JobCommon import JobCommon
 

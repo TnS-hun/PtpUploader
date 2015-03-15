@@ -1,16 +1,11 @@
-from Source.Gft import Gft
-from Source.SourceFactory import SourceFactory
-
-from Main import Initialize, Run
+from Main import Initialize
 from MyGlobals import MyGlobals
-from Ptp import Ptp
 from PtpUploaderException import *
 from Settings import Settings
 
 # TODO: temp
 import urllib
 import urllib2
-import time
 import traceback
 
 

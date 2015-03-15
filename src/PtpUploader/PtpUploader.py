@@ -1,10 +1,9 @@
-from Job.WorkerThread import WorkerThread
-
-from MyGlobals import MyGlobals
-from PtpUploaderMessage import *
-
 import Queue
 import threading
+
+from Job.WorkerThread import WorkerThread
+from MyGlobals import MyGlobals
+from PtpUploaderMessage import *
 
 
 class PtpUploader:

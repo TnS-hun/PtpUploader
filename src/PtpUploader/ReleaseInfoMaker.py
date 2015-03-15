@@ -1,17 +1,15 @@
-from Tool.MakeTorrent import MakeTorrent
+import sys
 
+from Tool.MakeTorrent import MakeTorrent
 from IncludedFileList import IncludedFileList
 from MyGlobals import MyGlobals
-from NfoParser import NfoParser
 from PtpUploaderException import *
 from ReleaseDescriptionFormatter import ReleaseDescriptionFormatter
 from ReleaseExtractor import ReleaseExtractor
 from ReleaseInfo import ReleaseInfo
 from Settings import Settings
-
 import codecs
 import os
-import sys
 
 
 class ReleaseInfoMaker:

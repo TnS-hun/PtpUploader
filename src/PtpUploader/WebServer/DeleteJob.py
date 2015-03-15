@@ -6,9 +6,7 @@ from Database import Database
 from Logger import Logger
 from ReleaseInfo import ReleaseInfo
 
-from flask import render_template, redirect, request, url_for
-
-import os
+from flask import request
 
 
 @app.route('/job/<int:jobId>/delete/')

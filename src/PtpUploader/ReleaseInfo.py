@@ -1,14 +1,12 @@
+import datetime
+
 from Job.FinishedJobPhase import FinishedJobPhase
 from Job.JobRunningState import JobRunningState
 from Job.JobStartMode import JobStartMode
-
 from Database import Database
 from PtpUploaderException import PtpUploaderException
 from Settings import Settings
-
-from sqlalchemy import Boolean, Column, DateTime, Integer, orm, String
-
-import datetime
+from sqlalchemy import Column, DateTime, Integer, orm, String
 import os
 
 

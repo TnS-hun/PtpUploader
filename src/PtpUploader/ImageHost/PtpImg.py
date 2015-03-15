@@ -1,14 +1,13 @@
-from PtpUploaderException import PtpUploaderException
-from Settings import Settings
-
-import poster
-import simplejson as json
-
-import os
-import re
 import urllib
 import urllib2
 import uuid
+
+import poster
+
+from PtpUploaderException import PtpUploaderException
+from Settings import Settings
+import simplejson as json
+import os
 
 
 class PtpImg:

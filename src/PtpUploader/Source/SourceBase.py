@@ -1,13 +1,12 @@
-from Job.FinishedJobPhase import FinishedJobPhase
+import shutil
 
+from Job.FinishedJobPhase import FinishedJobPhase
 from IncludedFileList import IncludedFileList
 from NfoParser import NfoParser
 from PtpUploaderException import PtpUploaderException
 from ReleaseExtractor import ReleaseExtractor
 from Settings import Settings
-
 import os
-import shutil
 
 
 class SourceBase:

@@ -8,16 +8,6 @@ from flask import request, url_for
 
 app = MyFlask(__name__)
 
-import WebServer.MovieAvailabilityCheck
-import WebServer.DeleteJob
-import WebServer.EditJob
-import WebServer.ExternalCreateJob
-import WebServer.JobCommon
-import WebServer.Jobs
-import WebServer.ServerMain
-import WebServer.Upload
-import WebServer.UploadFile
-
 
 @app.after_request
 def ShutdownSession(response):

@@ -1,20 +1,16 @@
+import uuid
+
 from Job.JobRunningState import JobRunningState
 from Job.JobStartMode import JobStartMode
 from WebServer import app
-
 from Helper import GetSuggestedReleaseNameAndSizeFromTorrentFile
 from MyGlobals import MyGlobals
 from Database import Database
 from NfoParser import NfoParser
-from PtpUploaderMessage import *
 from ReleaseInfo import ReleaseInfo
 from Settings import Settings
-
 from flask import jsonify, make_response, request
-from werkzeug import secure_filename
-
 import os
-import uuid
 
 
 def MakeExternalCreateJobErrorResponse(errorMessage):

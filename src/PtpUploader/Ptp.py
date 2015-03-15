@@ -1,16 +1,13 @@
+import time
+import traceback
+
 from MyGlobals import MyGlobals
 from PtpMovieSearchResult import PtpMovieSearchResult
 from PtpUploaderException import *
 from Settings import Settings
-
-import requests
 import simplejson as json
-
-import mimetypes
 import os
 import re
-import time
-import traceback
 
 
 class Ptp:

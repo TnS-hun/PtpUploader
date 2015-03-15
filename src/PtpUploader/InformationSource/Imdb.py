@@ -1,13 +1,10 @@
-from PtpUploaderException import PtpUploaderException
-
-import simplejson as json
-
 import hashlib
 import hmac
 import time
-import urllib
 import urllib2
 import uuid
+
+import simplejson as json
 
 # Uses the undocumented iPhone IMDb API.
 # See:

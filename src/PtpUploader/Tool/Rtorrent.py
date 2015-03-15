@@ -5,6 +5,7 @@ import xmlrpclib
 from pyrobase import bencode
 
 from MyGlobals import MyGlobals
+
 from PtpUploaderException import PtpUploaderException
 from pyrocore.util import load_config, metafile
 from pyrocore import config

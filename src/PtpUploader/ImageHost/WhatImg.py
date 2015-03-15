@@ -1,12 +1,12 @@
-from MyGlobals import MyGlobals
-from PtpUploaderException import PtpUploaderException
-from Settings import Settings
+import urllib
+import urllib2
 
 import poster
 
+from MyGlobals import MyGlobals
+from PtpUploaderException import PtpUploaderException
+from Settings import Settings
 import re
-import urllib
-import urllib2
 
 
 class WhatImg:

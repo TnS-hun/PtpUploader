@@ -1,17 +1,13 @@
-from Job.JobRunningState import JobRunningState
-from Source.SourceBase import SourceBase
+import urllib
+import urllib2
 
+from Source.SourceBase import SourceBase
 from Helper import DecodeHtmlEntities, GetSizeFromText
 from MyGlobals import MyGlobals
 from NfoParser import NfoParser
 from PtpUploaderException import *
-from ReleaseExtractor import ReleaseExtractor
-from ReleaseInfo import ReleaseInfo
 from ReleaseNameParser import ReleaseNameParser
-
 import re
-import urllib
-import urllib2
 
 
 class TorrentLeech(SourceBase):
