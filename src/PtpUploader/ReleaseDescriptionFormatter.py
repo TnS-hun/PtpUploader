@@ -65,7 +65,7 @@ class ReleaseDescriptionFormatter:
 
         ifoPathLower = ifo.Path.lower()
         if not ifoPathLower.endswith("_0.ifo"):
-            raise PtpUploaderException("Unsupported VIDEO_TS layout. The longest IFO is '%s' with duration '%'." % (
+            raise PtpUploaderException("Unsupported VIDEO_TS layout. The longest IFO is '%s' with duration '%ds'." % (
                 ifo.Path, ifo.DurationInSec))
 
         # Get the next VOB.
