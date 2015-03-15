@@ -98,7 +98,7 @@ function SendTorrentToPtpUploader( rawTorrentData, imdbUrl, sendToLink, sendPage
 						return false;
 					};
 
-					var editJobUrl = ptpUploaderUrl + "/job/" + jsonResponse.jobId + "/edit/"
+					var editJobUrl = ptpUploaderUrl + "/job/" + jsonResponse.jobId + "/edit/";
 					if ( openPtpAndPtpUploaderInNewTab )
 						window.open( editJobUrl );
 					else
@@ -211,7 +211,7 @@ function GetImdbUrl( urlNode, siteName )
 		url = decodeURIComponent( url );
 
 		// The first link is a trailer link on HDBits. Simply ignoring it would work too.
-		url = url.replace( "/trailers", "" )
+		url = url.replace( "/trailers", "" );
 
 		return url;
 	}
@@ -336,7 +336,7 @@ function Main()
 		if ( !downloadLinkElement )
 			return;
 
-		var action = downloadLinkElement.parentNode.getAttribute( "action" )
+		var action = downloadLinkElement.parentNode.getAttribute( "action" );
 		if ( !action )
 			return;
 
