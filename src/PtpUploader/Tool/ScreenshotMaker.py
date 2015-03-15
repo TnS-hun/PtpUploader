@@ -8,98 +8,101 @@ from Settings import Settings
 
 import os
 
+
 class ScreenshotMaker:
-	def __init__(self, logger, inputVideoPath):
-		self.Logger = logger
+    def __init__(self, logger, inputVideoPath):
+        self.Logger = logger
 
-		self.InternalScreenshotMaker = None
-		self.UsingMplayer = False
-		
-		if Settings.IsMplayerEnabled():
-			self.InternalScreenshotMaker = Mplayer( logger, inputVideoPath )
-			self.UsingMplayer = True
-		else:
-			self.InternalScreenshotMaker = Ffmpeg( logger, inputVideoPath )
-			
-	def GetScaleSize(self):
-		return self.InternalScreenshotMaker.ScaleSize
+        self.InternalScreenshotMaker = None
+        self.UsingMplayer = False
 
-	def __MakeUsingMplayer( self, timeInSeconds, outputImageDirectory ):
-		return self.InternalScreenshotMaker.MakeScreenshotInPng( timeInSeconds, outputImageDirectory )
+        if Settings.IsMplayerEnabled():
+            self.InternalScreenshotMaker = Mplayer(logger, inputVideoPath)
+            self.UsingMplayer = True
+        else:
+            self.InternalScreenshotMaker = Ffmpeg(logger, inputVideoPath)
 
-	def __MakeUsingFfmpeg( self, timeInSeconds, outputImageDirectory ):
-		outputPngPath = os.path.join( outputImageDirectory, "00000001.png" )
-		self.InternalScreenshotMaker.MakeScreenshotInPng( timeInSeconds, outputPngPath )
-		return outputPngPath
+    def GetScaleSize(self):
+        return self.InternalScreenshotMaker.ScaleSize
 
-	# Returns with the URL of the uploaded image.
-	def __TakeAndUploadScreenshot(self, timeInSeconds, outputImageDirectory):
-		screenshotPath = None
+    def __MakeUsingMplayer(self, timeInSeconds, outputImageDirectory):
+        return self.InternalScreenshotMaker.MakeScreenshotInPng(timeInSeconds, outputImageDirectory)
 
-		if self.UsingMplayer:
-			screenshotPath = self.__MakeUsingMplayer( timeInSeconds, outputImageDirectory )
-		else:
-			screenshotPath = self.__MakeUsingFfmpeg( timeInSeconds, outputImageDirectory )
+    def __MakeUsingFfmpeg(self, timeInSeconds, outputImageDirectory):
+        outputPngPath = os.path.join(outputImageDirectory, "00000001.png")
+        self.InternalScreenshotMaker.MakeScreenshotInPng(timeInSeconds, outputPngPath)
+        return outputPngPath
 
-		if ImageMagick.IsEnabled():
-			ImageMagick.OptimizePng( self.Logger, screenshotPath )
+    # Returns with the URL of the uploaded image.
+    def __TakeAndUploadScreenshot(self, timeInSeconds, outputImageDirectory):
+        screenshotPath = None
 
-		imageUrl = ImageUploader.Upload( self.Logger, imagePath = screenshotPath )
-		os.remove( screenshotPath )
-		return imageUrl
+        if self.UsingMplayer:
+            screenshotPath = self.__MakeUsingMplayer(timeInSeconds, outputImageDirectory)
+        else:
+            screenshotPath = self.__MakeUsingFfmpeg(timeInSeconds, outputImageDirectory)
 
-	# Takes maximum five screenshots from the first 30% of the video.
-	# Returns with the URLs of the uploaded images.
-	def TakeAndUploadScreenshots(self, outputImageDirectory, durationInSec, numberOfScreenshotsToTake):
-		urls = []
+        if ImageMagick.IsEnabled():
+            ImageMagick.OptimizePng(self.Logger, screenshotPath)
 
-		if numberOfScreenshotsToTake > 5:
-			numberOfScreenshotsToTake = 5
+        imageUrl = ImageUploader.Upload(self.Logger, imagePath=screenshotPath)
+        os.remove(screenshotPath)
+        return imageUrl
 
-		for i in range(numberOfScreenshotsToTake ):
-			position = 0.10 + ( i * 0.05 )
-			urls.append( self.__TakeAndUploadScreenshot( int( durationInSec * position ), outputImageDirectory ) )
+    # Takes maximum five screenshots from the first 30% of the video.
+    # Returns with the URLs of the uploaded images.
+    def TakeAndUploadScreenshots(self, outputImageDirectory, durationInSec, numberOfScreenshotsToTake):
+        urls = []
 
-		return urls
+        if numberOfScreenshotsToTake > 5:
+            numberOfScreenshotsToTake = 5
 
-	# We sort video files by their size (less than 50 MB difference is ignored) and by their name.
-	# Sorting by name is needed to ensure that the screenshot is taken from the first video to avoid spoilers when a release contains multiple videos.
-	# Sorting by size is needed to ensure that we don't take the screenshots from the sample or extras included.
-	# Ignoring less than 50 MB differnece is needed to make sure that CD1 will be sorted before CD2 even if CD2 is larger than CD1 by 49 MB.
-	@staticmethod
-	def SortVideoFiles(files):
-		class SortItem:
-			def __init__(self, path):
-				self.Path = path
-				self.LowerPath = path.lower()
-				self.Size = os.path.getsize( path )
+        for i in range(numberOfScreenshotsToTake):
+            position = 0.10 + (i * 0.05)
+            urls.append(self.__TakeAndUploadScreenshot(int(durationInSec * position), outputImageDirectory))
 
-			@staticmethod
-			def Compare( item1, item2 ):
-				ignoreSizeDifference = 50 * 1024 * 1024
-				sizeDifference = item1.Size - item2.Size 
-				if abs( sizeDifference ) > ignoreSizeDifference:
-					if item1.Size > item2.Size:
-						return -1
-					else:
-						return 1
+        return urls
 
-				if item1.LowerPath < item2.LowerPath:
-					return -1
-				elif item1.LowerPath > item2.LowerPath:
-					return 1
-				else:
-					return 0
+    # We sort video files by their size (less than 50 MB difference is ignored) and by their name.
+    # Sorting by name is needed to ensure that the screenshot is taken from the first video to avoid
+    # spoilers when a release contains multiple videos.
+    # Sorting by size is needed to ensure that we don't take the screenshots from the sample or extras included.
+    # Ignoring less than 50 MB differnece is needed to make sure that CD1 will be
+    # sorted before CD2 even if CD2 is larger than CD1 by 49 MB.
+    @staticmethod
+    def SortVideoFiles(files):
+        class SortItem:
+            def __init__(self, path):
+                self.Path = path
+                self.LowerPath = path.lower()
+                self.Size = os.path.getsize(path)
 
-		filesToSort = []
-		for file in files:
-			item = SortItem( file )
-			filesToSort.append( item )
+            @staticmethod
+            def Compare(item1, item2):
+                ignoreSizeDifference = 50 * 1024 * 1024
+                sizeDifference = item1.Size - item2.Size
+                if abs(sizeDifference) > ignoreSizeDifference:
+                    if item1.Size > item2.Size:
+                        return -1
+                    else:
+                        return 1
 
-		filesToSort.sort( cmp = SortItem.Compare )
+                if item1.LowerPath < item2.LowerPath:
+                    return -1
+                elif item1.LowerPath > item2.LowerPath:
+                    return 1
+                else:
+                    return 0
 
-		files = []
-		for item in filesToSort:
-			files.append( item.Path )
+        filesToSort = []
+        for file in files:
+            item = SortItem(file)
+            filesToSort.append(item)
 
-		return files
+        filesToSort.sort(cmp=SortItem.Compare)
+
+        files = []
+        for item in filesToSort:
+            files.append(item.Path)
+
+        return files

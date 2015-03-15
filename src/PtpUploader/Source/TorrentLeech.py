@@ -13,171 +13,183 @@ import re
 import urllib
 import urllib2
 
+
 class TorrentLeech(SourceBase):
-	RequiredHttpHeader = { "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:18.0) Gecko/20100101 Firefox/18.0" }
+    RequiredHttpHeader = {"User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:18.0) Gecko/20100101 Firefox/18.0"}
 
-	def __init__(self):
-		SourceBase.__init__( self )
+    def __init__(self):
+        SourceBase.__init__(self)
 
-		self.Name = "tl"
-		self.NameInSettings = "TorrentLeech"
+        self.Name = "tl"
+        self.NameInSettings = "TorrentLeech"
 
-	def IsEnabled(self):
-		return len( self.Username ) > 0 and len( self.Password ) > 0
+    def IsEnabled(self):
+        return len(self.Username) > 0 and len(self.Password) > 0
 
-	def Login(self):
-		MyGlobals.Logger.info( "Logging in to TorrentLeech." )
-		opener = urllib2.build_opener( urllib2.HTTPCookieProcessor( MyGlobals.CookieJar ) )
-		postData = urllib.urlencode( { "username": self.Username, "password": self.Password } )
-		request = urllib2.Request( "http://www.torrentleech.org/user/account/login/", postData, TorrentLeech.RequiredHttpHeader )
-		result = opener.open( request )
-		response = result.read()
-		self.CheckIfLoggedInFromResponse( response )
-	
-	def CheckIfLoggedInFromResponse(self, response):
-		if response.find( '<div class="recaptcha">' ) != -1:
-			raise PtpUploaderInvalidLoginException( "Can't login to TorrentLeech because there is a captcha on the login page." )
-		
-		if response.find( '<form method="post" action="/user/account/login/">' ) != -1:
-			raise PtpUploaderException( "Looks like you are not logged in to TorrentLeech. Probably due to the bad user name or password in settings." )
+    def Login(self):
+        MyGlobals.Logger.info("Logging in to TorrentLeech.")
+        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(MyGlobals.CookieJar))
+        postData = urllib.urlencode({"username": self.Username, "password": self.Password})
+        request = urllib2.Request("http://www.torrentleech.org/user/account/login/", postData,
+                                  TorrentLeech.RequiredHttpHeader)
+        result = opener.open(request)
+        response = result.read()
+        self.CheckIfLoggedInFromResponse(response)
 
-	# Release names on TL don't contain periods. This function restores them.
-	# Eg.: "Far From Heaven 2002 720p BluRay x264-HALCYON" instead of "Far.From.Heaven.2002.720p.BluRay.x264-HALCYON"
-	def __RestoreReleaseName(self, releaseName):
-		return releaseName.replace( " ", "." )
-	
-	# On TorrentLeech the torrent page doesn't contain the NFO, and the NFO page doesn't contain the release name so we have to read them separately. 
-	def __GetReleaseNameAndSize(self, logger, releaseInfo):
-		url = "http://www.torrentleech.org/torrent/%s" % releaseInfo.AnnouncementId
-		logger.info( "Downloading release name and size from page '%s'." % url )
-		
-		opener = urllib2.build_opener( urllib2.HTTPCookieProcessor( MyGlobals.CookieJar ) )
-		request = urllib2.Request( url, None, TorrentLeech.RequiredHttpHeader )
-		result = opener.open( request )
-		response = result.read()
-		self.CheckIfLoggedInFromResponse( response )
+    def CheckIfLoggedInFromResponse(self, response):
+        if response.find('<div class="recaptcha">') != -1:
+            raise PtpUploaderInvalidLoginException(
+                "Can't login to TorrentLeech because there is a captcha on the login page.")
 
-		# Get release name.
-		matches = re.search( "<title>Torrent Details for (.+) :: TorrentLeech.org</title>", response )
-		if matches is None:
-			raise PtpUploaderException( JobRunningState.Ignored_MissingInfo, "Release name can't be found on torrent page." )
-		releaseName = DecodeHtmlEntities( matches.group( 1 ) )
-		releaseName = self.__RestoreReleaseName( releaseName )
+        if response.find('<form method="post" action="/user/account/login/">') != -1:
+            raise PtpUploaderException("Looks like you are not logged in to TorrentLeech. Probably due to the bad user name or password in settings.")
 
-		# Get size.
-		# <td class="label">Size</td><td>5.47 GB</td></tr>
-		size = 0
-		matches = re.search( r"""<td class="label">Size</td><td>(.+)</td></tr>""", response )
-		if matches is None:
-			logger.warning( "Size not found on torrent page." )
-		else:
-			size = GetSizeFromText( matches.group( 1 ) )
+    # Release names on TL don't contain periods. This function restores them.
+    # Eg.: "Far From Heaven 2002 720p BluRay x264-HALCYON" instead of "Far.From.Heaven.2002.720p.BluRay.x264-HALCYON"
+    def __RestoreReleaseName(self, releaseName):
+        return releaseName.replace(" ", ".")
 
-		return releaseName, size
+    # On TorrentLeech the torrent page doesn't contain the NFO, a
+    # nd the NFO page doesn't contain the release name so we have to read them separately.
+    def __GetReleaseNameAndSize(self, logger, releaseInfo):
+        url = "http://www.torrentleech.org/torrent/%s" % releaseInfo.AnnouncementId
+        logger.info("Downloading release name and size from page '%s'." % url)
 
-	# On TorrentLeech the torrent page doesn't contain the NFO, and the NFO page doesn't contain the release name so we have to read them separately. 
-	def __ReadImdbIdFromNfoPage(self, logger, releaseInfo):
-		if releaseInfo.HasImdbId() or releaseInfo.HasPtpId():
-			return
-		
-		url = "http://www.torrentleech.org/torrents/torrent/nfotext?torrentID=%s" % releaseInfo.AnnouncementId
-		logger.info( "Downloading NFO from page '%s'." % url )
-		
-		opener = urllib2.build_opener( urllib2.HTTPCookieProcessor( MyGlobals.CookieJar ) )
-		request = urllib2.Request( url, None, TorrentLeech.RequiredHttpHeader )
-		result = opener.open( request )
-		response = result.read()
-		self.CheckIfLoggedInFromResponse( response )
+        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(MyGlobals.CookieJar))
+        request = urllib2.Request(url, None, TorrentLeech.RequiredHttpHeader)
+        result = opener.open(request)
+        response = result.read()
+        self.CheckIfLoggedInFromResponse(response)
 
-		releaseInfo.ImdbId = NfoParser.GetImdbId( response )
-	
-	def __HandleUserCreatedJob(self, logger, releaseInfo):
-		if ( not releaseInfo.IsReleaseNameSet() ) or releaseInfo.Size == 0:
-			releaseName, releaseInfo.Size = self.__GetReleaseNameAndSize( logger, releaseInfo )
-			if not releaseInfo.IsReleaseNameSet():
-				releaseInfo.ReleaseName = releaseName
+        # Get release name.
+        matches = re.search("<title>Torrent Details for (.+) :: TorrentLeech.org</title>", response)
+        if matches is None:
+            raise PtpUploaderException(JobRunningState.Ignored_MissingInfo,
+                                       "Release name can't be found on torrent page.")
+        releaseName = DecodeHtmlEntities(matches.group(1))
+        releaseName = self.__RestoreReleaseName(releaseName)
 
-		releaseNameParser = ReleaseNameParser( releaseInfo.ReleaseName )
-		releaseNameParser.GetSourceAndFormat( releaseInfo )
+        # Get size.
+        # <td class="label">Size</td><td>5.47 GB</td></tr>
+        size = 0
+        matches = re.search(r"""<td class="label">Size</td><td>(.+)</td></tr>""", response)
+        if matches is None:
+            logger.warning("Size not found on torrent page.")
+        else:
+            size = GetSizeFromText(matches.group(1))
 
-		# Pretime is not indicated on TorrentLeech so we have to rely on our scene groups list.
-		if releaseNameParser.Scene:
-			releaseInfo.SetSceneRelease()
+        return releaseName, size
 
-		self.__ReadImdbIdFromNfoPage( logger, releaseInfo )
+    # On TorrentLeech the torrent page doesn't contain the NFO,
+    # and the NFO page doesn't contain the release name so we have to read them separately.
+    def __ReadImdbIdFromNfoPage(self, logger, releaseInfo):
+        if releaseInfo.HasImdbId() or releaseInfo.HasPtpId():
+            return
 
-	def __HandleAutoCreatedJob(self, logger, releaseInfo):
-		releaseInfo.ReleaseName = self.__RestoreReleaseName( releaseInfo.ReleaseName )
+        url = "http://www.torrentleech.org/torrents/torrent/nfotext?torrentID=%s" % releaseInfo.AnnouncementId
+        logger.info("Downloading NFO from page '%s'." % url)
 
-		# In case of automatic announcement we have to check the release name if it is valid.
-		# We know the release name from the announcement, so we can filter it without downloading anything (yet) from the source.
-		releaseNameParser = ReleaseNameParser( releaseInfo.ReleaseName )
-		isAllowedMessage = releaseNameParser.IsAllowed()
-		if isAllowedMessage is not None:
-			raise PtpUploaderException( JobRunningState.Ignored, isAllowedMessage )
+        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(MyGlobals.CookieJar))
+        request = urllib2.Request(url, None, TorrentLeech.RequiredHttpHeader)
+        result = opener.open(request)
+        response = result.read()
+        self.CheckIfLoggedInFromResponse(response)
 
-		releaseNameParser.GetSourceAndFormat( releaseInfo )
-		
-		releaseName, releaseInfo.Size = self.__GetReleaseNameAndSize( logger, releaseInfo )
-		if releaseName != releaseInfo.ReleaseName:
-			raise PtpUploaderException( "Announcement release name '%s' and release name '%s' on torrent page are different." % ( releaseInfo.ReleaseName, releaseName ) )
+        releaseInfo.ImdbId = NfoParser.GetImdbId(response)
 
-		# Pretime is not indicated on TorrentLeech so we have to rely on our scene groups list.
-		if releaseNameParser.Scene:
-			releaseInfo.SetSceneRelease()
+    def __HandleUserCreatedJob(self, logger, releaseInfo):
+        if (not releaseInfo.IsReleaseNameSet()) or releaseInfo.Size == 0:
+            releaseName, releaseInfo.Size = self.__GetReleaseNameAndSize(logger, releaseInfo)
+            if not releaseInfo.IsReleaseNameSet():
+                releaseInfo.ReleaseName = releaseName
 
-		if ( not releaseInfo.IsSceneRelease() ) and self.AutomaticJobFilter == "SceneOnly":
-			raise PtpUploaderException( JobRunningState.Ignored, "Non-scene release." )
+        releaseNameParser = ReleaseNameParser(releaseInfo.ReleaseName)
+        releaseNameParser.GetSourceAndFormat(releaseInfo)
 
-		self.__ReadImdbIdFromNfoPage( logger, releaseInfo )
+        # Pretime is not indicated on TorrentLeech so we have to rely on our scene groups list.
+        if releaseNameParser.Scene:
+            releaseInfo.SetSceneRelease()
 
-	def PrepareDownload(self, logger, releaseInfo):
-		# TODO: temp
-		# TorrentLeech has a bad habit of logging out, so we put this here.
-		self.Login()
+        self.__ReadImdbIdFromNfoPage(logger, releaseInfo)
 
-		if releaseInfo.IsUserCreatedJob():
-			self.__HandleUserCreatedJob( logger, releaseInfo )
-		else:
-			self.__HandleAutoCreatedJob( logger, releaseInfo )
-	
-	def DownloadTorrent(self, logger, releaseInfo, path):
-		# Filename in the URL could be anything.
-		url = "http://www.torrentleech.org/download/%s/TL.torrent" % releaseInfo.AnnouncementId
-		logger.info( "Downloading torrent file from '%s' to '%s'." % ( url, path ) )
+    def __HandleAutoCreatedJob(self, logger, releaseInfo):
+        releaseInfo.ReleaseName = self.__RestoreReleaseName(releaseInfo.ReleaseName)
 
-		opener = urllib2.build_opener( urllib2.HTTPCookieProcessor( MyGlobals.CookieJar ) )		
-		request = urllib2.Request( url, None, TorrentLeech.RequiredHttpHeader )
-		result = opener.open( request )
-		response = result.read()
-		self.CheckIfLoggedInFromResponse( response )
-		
-		file = open( path, "wb" )
-		file.write( response )
-		file.close()
+        # In case of automatic announcement we have to check the release name if it is valid.
+        # We know the release name from the announcement,
+        # so we can filter it without downloading anything (yet) from the source.
+        releaseNameParser = ReleaseNameParser(releaseInfo.ReleaseName)
+        isAllowedMessage = releaseNameParser.IsAllowed()
+        if isAllowedMessage is not None:
+            raise PtpUploaderException(JobRunningState.Ignored, isAllowedMessage)
 
-		# Calling Helper.ValidateTorrentFile is not needed because NfoParser.IsTorrentContainsMultipleNfos will throw an exception if it is not a valid torrent file.
+        releaseNameParser.GetSourceAndFormat(releaseInfo)
 
-		# If a torrent contains multiple NFO files then it is likely that the site also showed the wrong NFO and we have checked the existence of another movie on PTP.
-		# So we abort here. These errors happen rarely anyway.
-		# (We could also try read the NFO with the same name as the release or with the same name as the first RAR and reschedule for checking with the correct IMDb id.)
-		if NfoParser.IsTorrentContainsMultipleNfos( path ):
-			raise PtpUploaderException( "Torrent '%s' contains multiple NFO files." % path )  
+        releaseName, releaseInfo.Size = self.__GetReleaseNameAndSize(logger, releaseInfo)
+        if releaseName != releaseInfo.ReleaseName:
+            raise PtpUploaderException(
+                "Announcement release name '%s' and release name '%s' on torrent page are different." % (
+                    releaseInfo.ReleaseName, releaseName))
 
-	def GetIdFromUrl(self, url):
-		result = re.match( r".*torrentleech\.org/torrent/(\d+).*", url )
-		if result is None:
-			return ""
-		else:
-			return result.group( 1 )
+        # Pretime is not indicated on TorrentLeech so we have to rely on our scene groups list.
+        if releaseNameParser.Scene:
+            releaseInfo.SetSceneRelease()
 
-	def GetUrlFromId(self, id):
-		return "http://www.torrentleech.org/torrent/" + id
+        if (not releaseInfo.IsSceneRelease()) and self.AutomaticJobFilter == "SceneOnly":
+            raise PtpUploaderException(JobRunningState.Ignored, "Non-scene release.")
 
-	def GetIdFromAutodlIrssiUrl( self, url ):
-		# http://www.torrentleech.org/rss/download/897257/rsskey/AAAAA/a.torrent
-		result = re.match( r".*torrentleech\.org/rss/download/(\d+)/.*", url )
-		if result is None:
-			return ""
-		else:
-			return result.group( 1 )
+        self.__ReadImdbIdFromNfoPage(logger, releaseInfo)
+
+    def PrepareDownload(self, logger, releaseInfo):
+        # TODO: temp
+        # TorrentLeech has a bad habit of logging out, so we put this here.
+        self.Login()
+
+        if releaseInfo.IsUserCreatedJob():
+            self.__HandleUserCreatedJob(logger, releaseInfo)
+        else:
+            self.__HandleAutoCreatedJob(logger, releaseInfo)
+
+    def DownloadTorrent(self, logger, releaseInfo, path):
+        # Filename in the URL could be anything.
+        url = "http://www.torrentleech.org/download/%s/TL.torrent" % releaseInfo.AnnouncementId
+        logger.info("Downloading torrent file from '%s' to '%s'." % (url, path))
+
+        opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(MyGlobals.CookieJar))
+        request = urllib2.Request(url, None, TorrentLeech.RequiredHttpHeader)
+        result = opener.open(request)
+        response = result.read()
+        self.CheckIfLoggedInFromResponse(response)
+
+        file = open(path, "wb")
+        file.write(response)
+        file.close()
+
+        # Calling Helper.ValidateTorrentFile is not needed because NfoParser.IsTorrentContainsMultipleNfos will throw
+        # an exception if it is not a valid torrent file.
+
+        # If a torrent contains multiple NFO files then it is likely that the site also showed the wrong NFO and we
+        # have checked the existence of another movie on PTP.
+        # So we abort here. These errors happen rarely anyway.
+        # (We could also try read the NFO with the same name as the release or with the same name as the first RAR
+        # and reschedule for checking with the correct IMDb id.)
+        if NfoParser.IsTorrentContainsMultipleNfos(path):
+            raise PtpUploaderException("Torrent '%s' contains multiple NFO files." % path)
+
+    def GetIdFromUrl(self, url):
+        result = re.match(r".*torrentleech\.org/torrent/(\d+).*", url)
+        if result is None:
+            return ""
+        else:
+            return result.group(1)
+
+    def GetUrlFromId(self, id):
+        return "http://www.torrentleech.org/torrent/" + id
+
+    def GetIdFromAutodlIrssiUrl(self, url):
+        # http://www.torrentleech.org/rss/download/897257/rsskey/AAAAA/a.torrent
+        result = re.match(r".*torrentleech\.org/rss/download/(\d+)/.*", url)
+        if result is None:
+            return ""
+        else:
+            return result.group(1)

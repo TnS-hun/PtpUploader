@@ -12,37 +12,38 @@ from ReleaseInfo import ReleaseInfo
 
 from flask import render_template, redirect, request, url_for
 
-@app.route( "/job/<int:jobId>/edit/", methods = [ "GET", "POST" ] )
+
+@app.route("/job/<int:jobId>/edit/", methods=["GET", "POST"])
 @requires_auth
 def EditJob(jobId):
-	if request.method == 'POST':
-		releaseInfo = Database.DbSession.query( ReleaseInfo ).filter( ReleaseInfo.Id == jobId ).first()
+    if request.method == 'POST':
+        releaseInfo = Database.DbSession.query(ReleaseInfo).filter(ReleaseInfo.Id == jobId).first()
 
-		# TODO: This is very far from perfect. There is no guarantee that the job didn't start meanwhile.
-		# Probably only the WorkerThred should change the running state.  		
-		if not releaseInfo.CanEdited():
-			return "The job is currently running and can't be edited!"
+        # TODO: This is very far from perfect. There is no guarantee that the job didn't start meanwhile.
+        # Probably only the WorkerThred should change the running state.
+        if not releaseInfo.CanEdited():
+            return "The job is currently running and can't be edited!"
 
-		releaseInfo.SetStopBeforeUploading( request.values[ "post" ] == "Resume but stop before uploading" )
+        releaseInfo.SetStopBeforeUploading(request.values["post"] == "Resume but stop before uploading")
 
-		if releaseInfo.IsReleaseNameEditable():
-			releaseInfo.ReleaseName = request.values[ "release_name" ]
+        if releaseInfo.IsReleaseNameEditable():
+            releaseInfo.ReleaseName = request.values["release_name"]
 
-		JobCommon.FillReleaseInfoFromRequestData( releaseInfo, request )
-		releaseInfo.JobRunningState = JobRunningState.WaitingForStart
-		Database.DbSession.commit()
-		MyGlobals.PtpUploader.AddMessage( PtpUploaderMessageStartJob( releaseInfo.Id ) )
+        JobCommon.FillReleaseInfoFromRequestData(releaseInfo, request)
+        releaseInfo.JobRunningState = JobRunningState.WaitingForStart
+        Database.DbSession.commit()
+        MyGlobals.PtpUploader.AddMessage(PtpUploaderMessageStartJob(releaseInfo.Id))
 
-		return redirect( url_for( "jobs" ) )
+        return redirect(url_for("jobs"))
 
-	releaseInfo = Database.DbSession.query( ReleaseInfo ).filter( ReleaseInfo.Id == jobId ).first()
-	job = {}
-	JobCommon.FillDictionaryFromReleaseInfo( job, releaseInfo )
+    releaseInfo = Database.DbSession.query(ReleaseInfo).filter(ReleaseInfo.Id == jobId).first()
+    job = {}
+    JobCommon.FillDictionaryFromReleaseInfo(job, releaseInfo)
 
-	if releaseInfo.CanEdited():
-		if releaseInfo.IsReleaseNameEditable():
-			job[ "IsReleaseNameEditable" ] = True
+    if releaseInfo.CanEdited():
+        if releaseInfo.IsReleaseNameEditable():
+            job["IsReleaseNameEditable"] = True
 
-		job[ "CanBeEdited" ] = True
+        job["CanBeEdited"] = True
 
-	return render_template( "edit_job.html", job = job )
+    return render_template("edit_job.html", job=job)
