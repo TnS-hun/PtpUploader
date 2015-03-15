@@ -254,10 +254,10 @@ class CheckAnnouncement(WorkerBase):
             return
 
         if not self.__IsAllowedImdbRating():
-            raise PtpUploaderException("Ignored because of IMDb rating: %s." % (self.ReleaseInfo.ImdbRating))
+            raise PtpUploaderException("Ignored because of IMDb rating: %s." % self.ReleaseInfo.ImdbRating)
 
         if not self.__IsAllowedImdbVoteCount():
-            raise PtpUploaderException("Ignored because of IMDb vote count: %s." % (self.ReleaseInfo.ImdbVoteCount))
+            raise PtpUploaderException("Ignored because of IMDb vote count: %s." % self.ReleaseInfo.ImdbVoteCount)
 
     def __StopAutomaticJobBeforeDownloadingTorrentFile(self):
         if self.ReleaseInfo.IsUserCreatedJob() or self.ReleaseInfo.AnnouncementSource.StopAutomaticJob != "beforedownloadingtorrentfile":

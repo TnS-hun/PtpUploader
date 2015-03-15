@@ -1,18 +1,14 @@
+import urllib
+import urllib2
+
 from Job.JobRunningState import JobRunningState
 from Source.SourceBase import SourceBase
-
 from Helper import DecodeHtmlEntities, GetSizeFromText, MakeRetryingHttpRequest
 from MyGlobals import MyGlobals
 from NfoParser import NfoParser
 from PtpUploaderException import PtpUploaderException
-from ReleaseExtractor import ReleaseExtractor
-from ReleaseInfo import ReleaseInfo
 from ReleaseNameParser import ReleaseNameParser
-
 import re
-import time
-import urllib
-import urllib2
 
 
 class FunFile(SourceBase):

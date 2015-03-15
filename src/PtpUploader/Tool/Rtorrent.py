@@ -1,18 +1,14 @@
-from Tool.PyrocoreBencode import bencode
+import shutil
+import time
+import xmlrpclib
+
+from pyrobase import bencode
 
 from MyGlobals import MyGlobals
 from PtpUploaderException import PtpUploaderException
-from Settings import Settings
-
-from pyrobase import bencode
 from pyrocore.util import load_config, metafile
 from pyrocore import config
-
 import os
-import shutil
-import subprocess
-import time
-import xmlrpclib
 
 
 class Rtorrent:
@@ -63,7 +59,7 @@ class Rtorrent:
         logger.info("Adding torrent '%s' without hash checking to rTorrent to '%s'." % (torrentPath, downloadPath))
 
         sourceDirectory, sourceFilename = os.path.split(torrentPath)
-        sourceFilename = "fast resume " + sourceFilename
+        sourceFilename += "fast resume "
         destinationTorrentPath = os.path.join(sourceDirectory, sourceFilename)
 
         if os.path.exists(destinationTorrentPath):

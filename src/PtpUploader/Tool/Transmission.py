@@ -31,7 +31,7 @@ class Transmission:
             # Even a watch dir with Pyinotify would be better probably.
             # rTorrent could write the info hash to a directory watched by us.
             # completed = self.proxy.d.get_complete( infoHash );
-            if (self.transmission.get_torrent(infoHash).doneDate > 0):
+            if self.transmission.get_torrent(infoHash).doneDate > 0:
                 return True
         except Exception:
             logger.exception(

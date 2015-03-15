@@ -55,7 +55,7 @@ class Ptp:
             raise PtpUploaderInvalidLoginException(
                 "Got exception while loading JSON login response from PTP. Response: '%s'." % response)
 
-        if (jsonLoad is None):
+        if jsonLoad is None:
             raise PtpUploaderInvalidLoginException(
                 "Got bad JSON response from PTP while trying to log in. Response: '%s'." % response)
 
