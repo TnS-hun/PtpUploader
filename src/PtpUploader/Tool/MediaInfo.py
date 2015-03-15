@@ -1,11 +1,11 @@
+from PtpUploaderException import PtpUploaderException
+from Settings import Settings
+
+import re
 import subprocess
 import sys
 import threading
 import traceback
-
-from PtpUploaderException import PtpUploaderException
-from Settings import Settings
-import re
 
 
 class MediaInfo:

@@ -1,6 +1,7 @@
-import urllib2
+from PtpUploaderException import PtpUploaderException
 
 import re
+import urllib2
 
 
 class MoviePoster:

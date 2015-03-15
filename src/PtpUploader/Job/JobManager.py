@@ -1,13 +1,15 @@
-import datetime
-import threading
-
 from Job.CheckAnnouncement import CheckAnnouncement
 from Job.JobRunningState import JobRunningState
 from Job.Upload import Upload
+
 from AnnouncementWatcher import *
 from Database import Database
 from Logger import Logger
 from MyGlobals import MyGlobals
+
+import datetime
+import Queue
+import threading
 
 
 class JobManagerItem:

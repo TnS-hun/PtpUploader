@@ -1,3 +1,4 @@
+from MyGlobals import MyGlobals
 from PtpUploaderException import PtpUploaderException
 from Settings import Settings
 from Tool.Unrar import Unrar

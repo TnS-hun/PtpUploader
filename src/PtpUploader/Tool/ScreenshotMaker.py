@@ -3,6 +3,7 @@ from Tool.ImageMagick import ImageMagick
 from Tool.Ffmpeg import Ffmpeg
 from Tool.Mplayer import Mplayer
 
+from PtpUploaderException import PtpUploaderException
 from Settings import Settings
 
 import os

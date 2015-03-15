@@ -1,9 +1,9 @@
-import subprocess
-
 from PtpUploaderException import PtpUploaderException
 from Settings import Settings
+
 import os
 import re
+import subprocess
 
 
 class Mplayer:

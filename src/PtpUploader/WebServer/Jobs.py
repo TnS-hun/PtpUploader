@@ -1,19 +1,21 @@
-import datetime
-
 from Job.JobRunningState import JobRunningState
 from Job.JobStartMode import JobStartMode
 from WebServer import app
 from WebServer.Authentication import requires_auth
 from WebServer.Pagination import Pagination
+
 from Database import Database
 from Helper import SizeToText, TimeDifferenceToText
 from MyGlobals import MyGlobals
 from PtpUploaderMessage import *
 from ReleaseInfo import ReleaseInfo
 from Settings import Settings
+
 from flask import render_template, request, url_for
 from sqlalchemy import asc, desc
-from sqlalchemy.sql import or_
+from sqlalchemy.sql import and_, or_
+
+import datetime
 
 
 def GetStateIcon(state):

@@ -1,7 +1,12 @@
 from Source.SourceBase import SourceBase
 
+from MyGlobals import MyGlobals
+from NfoParser import NfoParser
 from PtpUploaderException import PtpUploaderException
+from ReleaseExtractor import ReleaseExtractor
+from ReleaseInfo import ReleaseInfo
 from ReleaseNameParser import ReleaseNameParser
+from Settings import Settings
 
 
 class Torrent(SourceBase):

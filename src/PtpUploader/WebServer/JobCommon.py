@@ -1,9 +1,7 @@
-from datetime import datetime
-import urlparse
-
 from Job.JobStartMode import JobStartMode
 from WebServer import app
 from WebServer.Authentication import requires_auth
+
 from Database import Database
 from Helper import ParseQueryString, TimeDifferenceToText
 from IncludedFileList import IncludedFileList
@@ -12,9 +10,13 @@ from NfoParser import NfoParser
 from Ptp import Ptp
 from ReleaseInfo import ReleaseInfo
 from Settings import Settings
+
 from flask import jsonify, request
 from werkzeug import secure_filename
+
+from datetime import datetime
 import os
+import urlparse
 
 
 class JobCommon:

@@ -1,11 +1,10 @@
-﻿import subprocess
-import uuid
-
-from PtpUploaderException import PtpUploaderException
+﻿from PtpUploaderException import PtpUploaderException
 from Settings import Settings
+
 import fnmatch
 import os
-
+import subprocess
+import uuid
 
 
 # Supported:

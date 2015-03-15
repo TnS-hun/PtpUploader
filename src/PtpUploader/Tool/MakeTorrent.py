@@ -1,13 +1,12 @@
-import subprocess
-
-from pyrobase import bencode
-
 from Helper import GetPathSize
 from PtpUploaderException import PtpUploaderException
 from Settings import Settings
-from pyrocore.util import metafile
-import os
 
+from pyrobase import bencode
+from pyrocore.util import metafile
+
+import os
+import subprocess
 
 # mktorrent is not working properly under Windows.
 

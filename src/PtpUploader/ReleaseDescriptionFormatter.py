@@ -3,6 +3,9 @@ from Tool.ScreenshotMaker import ScreenshotMaker
 
 from PtpUploaderException import *
 from ScreenshotList import ScreenshotList
+from Settings import Settings
+
+import os
 
 
 class ReleaseDescriptionVideoEntry:

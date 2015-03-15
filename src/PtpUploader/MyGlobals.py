@@ -1,10 +1,10 @@
+from PtpSubtitle import PtpSubtitle
+
 import cookielib
 import datetime
 import logging
-import sys
-
-from PtpSubtitle import PtpSubtitle
 import os
+import sys
 import requests
 
 

@@ -1,13 +1,18 @@
-import time
-
 from Job.JobRunningState import JobRunningState
 from Source.SourceBase import SourceBase
+
 from Helper import DecodeHtmlEntities, GetSizeFromText
 from MyGlobals import MyGlobals
 from NfoParser import NfoParser
 from PtpUploaderException import PtpUploaderException
+from ReleaseExtractor import ReleaseExtractor
+from ReleaseInfo import ReleaseInfo
 from ReleaseNameParser import ReleaseNameParser
+
+import requests
+
 import re
+import time
 
 
 class Gft(SourceBase):

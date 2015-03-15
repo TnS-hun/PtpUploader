@@ -1,7 +1,6 @@
 from Tool.PyrocoreBencode import bencode
 
 from MyGlobals import MyGlobals
-
 from PtpUploaderException import PtpUploaderException
 from Settings import Settings
 

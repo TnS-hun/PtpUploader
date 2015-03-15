@@ -1,9 +1,10 @@
-import HTMLParser  # For HTML entity reference decoding...
-
 from MyGlobals import MyGlobals
 from Ptp import Ptp
 from PtpUploaderException import *
+
 import simplejson as json
+
+import HTMLParser  # For HTML entity reference decoding...
 import re
 
 

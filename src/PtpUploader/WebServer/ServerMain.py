@@ -22,7 +22,7 @@ from MyGlobals import MyGlobals
 from PtpUploaderMessage import *
 from ReleaseInfo import ReleaseInfo
 
-from flask import request, redirect, url_for
+from flask import render_template, request, redirect, url_for
 
 import os
 

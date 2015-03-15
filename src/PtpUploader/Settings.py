@@ -1,12 +1,12 @@
-﻿import ConfigParser
-import subprocess
-
-from MyGlobals import MyGlobals
+﻿from MyGlobals import MyGlobals
 from TagList import TagList
+
 import codecs
+import ConfigParser
 import fnmatch
 import os
 import re
+import subprocess
 
 
 class Settings(object):

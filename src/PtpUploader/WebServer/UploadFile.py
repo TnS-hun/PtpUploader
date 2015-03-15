@@ -1,12 +1,13 @@
-﻿import urllib
-
-from WebServer import app
+﻿from WebServer import app
 from WebServer.Authentication import requires_auth
+
 from NfoParser import NfoParser
 from Settings import Settings
-from flask import jsonify, request
-import os
 
+from flask import jsonify, request
+
+import os
+import urllib
 
 
 # Needed for jQuery File Tree.

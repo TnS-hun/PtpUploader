@@ -1,10 +1,11 @@
-import ConfigParser
-import sys
-
 from MyGlobals import MyGlobals
 from Ptp import Ptp
 from Settings import Settings
+
+import ConfigParser
+
 import os
+import sys
 
 
 def LoadNotifierSettings():

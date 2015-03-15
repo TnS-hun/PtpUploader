@@ -1,9 +1,10 @@
-import logging
-import threading
-
 from WebServer import app
+
 from MyGlobals import MyGlobals
 from Settings import Settings
+
+import logging
+import threading
 
 
 class MyWebServer(threading.Thread):

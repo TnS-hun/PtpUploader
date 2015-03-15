@@ -1,9 +1,7 @@
+import codecs
 import datetime
 import sys
 import traceback
-
-import codecs
-
 
 
 # The reason for not using Python's logger:

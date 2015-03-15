@@ -1,9 +1,10 @@
-import textwrap
-
 from Helper import GetFileListFromTorrent
+from PtpUploaderException import PtpUploaderException
+
 import fnmatch
 import os
 import re
+import textwrap
 
 
 # TnS (14 Oct 2012): the stripping is no longer used.

@@ -1,13 +1,15 @@
-import shutil
-
 from Source.SourceBase import SourceBase
+
 from Helper import GetPathSize
 from IncludedFileList import IncludedFileList
+from MyGlobals import MyGlobals
 from NfoParser import NfoParser
 from PtpUploaderException import PtpUploaderException
 from ReleaseExtractor import ReleaseExtractor
 from ReleaseNameParser import ReleaseNameParser
+
 import os
+import shutil
 
 
 class File(SourceBase):

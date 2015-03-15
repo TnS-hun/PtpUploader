@@ -1,10 +1,11 @@
 # Based on HTTP Basic Auth by Armin Ronacher
 # http://flask.pocoo.org/snippets/8/
 
-from functools import wraps
-
 from Settings import Settings
+
 from flask import request, Response
+
+from functools import wraps
 
 
 def check_auth(username, password):
