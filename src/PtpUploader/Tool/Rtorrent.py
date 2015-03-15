@@ -63,7 +63,7 @@ class Rtorrent:
         logger.info("Adding torrent '%s' without hash checking to rTorrent to '%s'." % (torrentPath, downloadPath))
 
         sourceDirectory, sourceFilename = os.path.split(torrentPath)
-        sourceFilename = "fast resume " + sourceFilename
+        sourceFilename += "fast resume "
         destinationTorrentPath = os.path.join(sourceDirectory, sourceFilename)
 
         if os.path.exists(destinationTorrentPath):
