@@ -11,6 +11,7 @@ except ImportError:
 DEFAULT_USER_AGENT = ("Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) "
                       "Ubuntu Chromium/34.0.1847.116 Chrome/34.0.1847.116 Safari/537.36")
 
+
 class CloudflareAdapter(HTTPAdapter):
     def send(self, request, **kwargs):
         domain = request.url.split("/")[2]
@@ -38,11 +39,12 @@ class CloudflareAdapter(HTTPAdapter):
         parsed = urlparse(url)
         domain = parsed.netloc
         page = resp.text
-        kwargs.pop("params", None) # Don't pass on params
+        kwargs.pop("params", None)  # Don't pass on params
         try:
             # Extract the arithmetic operation
             challenge = re.search(r'name="jschl_vc" value="(\w+)"', page).group(1)
-            builder = re.search(r"setTimeout\(function\(\){\s+(var t,r,a,f.+?\r?\n[\s\S]+?a\.value =.+?)\r?\n", page).group(1)
+            builder = re.search(r"setTimeout\(function\(\){\s+(var t,r,a,f.+?\r?\n[\s\S]+?a\.value =.+?)\r?\n",
+                                page).group(1)
             builder = re.sub(r"a\.value =(.+?) \+ .+?;", r"\1", builder)
             builder = re.sub(r"\s{3,}[a-z](?: = |\.).+", "", builder)
             builder = builder.replace("parseInt", "return parseInt")
