@@ -18,7 +18,7 @@ class Torrent(SourceBase):
 
     def PrepareDownload(self, logger, releaseInfo):
         # TODO: support for uploads from torrent without specifying IMDb id and reading it from NFO.
-        # (We only get IMDb id when the download is finisehd.)
+        # (We only get IMDb id when the download is finished.)
 
         # TODO: support for new movies without IMDB id
         if (not releaseInfo.HasImdbId()) and (not releaseInfo.HasPtpId()):

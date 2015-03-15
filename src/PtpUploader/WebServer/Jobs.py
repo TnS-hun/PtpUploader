@@ -166,7 +166,7 @@ def jobs(page):
 @requires_auth
 def StartJob(jobId):
     # TODO: This is very far from perfect. There is no guarantee that the job didn't start meanwhile.
-    # Probably only the WorkerThred should change the running state.
+    # Probably only the WorkerThread should change the running state.
     releaseInfo = Database.DbSession.query(ReleaseInfo).filter(ReleaseInfo.Id == jobId).first()
     if not releaseInfo.CanResumed():
         return "The job is already running!"
@@ -190,7 +190,7 @@ def StartJob(jobId):
 @requires_auth
 def StopJob(jobId):
     # TODO: This is very far from perfect. There is no guarantee that the job didn't stop meanwhile.
-    # Probably only the WorkerThred should change the running state.
+    # Probably only the WorkerThread should change the running state.
     releaseInfo = Database.DbSession.query(ReleaseInfo).filter(ReleaseInfo.Id == jobId).first()
     if not releaseInfo.CanStopped():
         return "The job is already stopped!"
