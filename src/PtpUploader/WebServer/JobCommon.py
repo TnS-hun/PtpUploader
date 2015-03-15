@@ -270,11 +270,9 @@ def MakeIncludedFilesTreeJson(includedFileList):
             for file in self.Files:
                 # OriginallySelected and IncludePath are custom properties.
                 # http://stackoverflow.com/questions/6012734/dynatree-where-can-i-store-additional-info-in-each-node
-                entry = {}
-                entry["title"] = file.Name
-                entry["select"] = file.IncludedFileItem.IsIncluded()
-                entry["OriginallySelected"] = file.IncludedFileItem.IsDefaultIncluded()
-                entry["IncludePath"] = file.IncludedFileItem.Name
+                entry = {"title": file.Name, "select": file.IncludedFileItem.IsIncluded(),
+                         "OriginallySelected": file.IncludedFileItem.IsDefaultIncluded(),
+                         "IncludePath": file.IncludedFileItem.Name}
                 parentList.append(entry)
 
     root = TreeDirectory(u"")
