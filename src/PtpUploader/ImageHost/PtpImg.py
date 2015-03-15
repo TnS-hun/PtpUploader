@@ -21,7 +21,7 @@ class PtpImg:
         # Get image extension from the URL and fall back to ptpimg.me's rehosting if it's not JPG or PNG.
         fileName, extension = os.path.splitext(imageUrl)
         extension = extension.lower()
-        if extension != ".jpg" and extension != ".jpeg" and extension != ".png":
+        if (extension != ".jpg" and extension != ".jpeg" and extension != ".png"):
             return PtpImg.__UploadInternal(logger, imagePath, imageUrl)
 
         # Get a random name for the temporary file.

@@ -10,7 +10,7 @@ class ImageMagick:
     # The compression is lossless.
     @staticmethod
     def OptimizePng(logger, sourceImagePath):
-        logger.info("Optimizing PNG '%s' with ImageMagick." % sourceImagePath)
+        logger.info("Optimizing PNG '%s' with ImageMagick." % (sourceImagePath))
 
         if not os.path.isfile(sourceImagePath):
             raise PtpUploaderException("Can't read source image '%s' for PNG optimization." % sourceImagePath)
@@ -30,7 +30,7 @@ class ImageMagick:
         if outputSize > 0 and gainedBytes > 0:
             os.remove(sourceImagePath)
             os.rename(outputImagePath, sourceImagePath)
-            logger.info("Optimized PNG is %s bytes smaller." % gainedBytes)
+            logger.info("Optimized PNG is %s bytes smaller." % (gainedBytes))
         else:
             os.remove(outputImagePath)
 

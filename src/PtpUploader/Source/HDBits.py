@@ -1,14 +1,18 @@
-import json
-
 from Job.JobRunningState import JobRunningState
 from Source.SourceBase import SourceBase
-from Helper import RemoveDisallowedCharactersFromPath
+
+from Helper import DecodeHtmlEntities, GetSizeFromText, MakeRetryingHttpRequest, RemoveDisallowedCharactersFromPath
 from MyGlobals import MyGlobals
 from NfoParser import NfoParser
 from PtpUploaderException import PtpUploaderException
+from ReleaseExtractor import ReleaseExtractor
+from ReleaseInfo import ReleaseInfo
 from ReleaseNameParser import ReleaseNameParser
+
 import re
+import time
 import requests
+import json
 
 
 class HDBits(SourceBase):

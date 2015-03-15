@@ -6,9 +6,12 @@ from Helper import DecodeHtmlEntities, GetSizeFromText, MakeRetryingHttpGetReque
 from MyGlobals import MyGlobals
 from NfoParser import NfoParser
 from PtpUploaderException import PtpUploaderException
+from ReleaseExtractor import ReleaseExtractor
+from ReleaseInfo import ReleaseInfo
 from ReleaseNameParser import ReleaseNameParser
 
 import re
+import time
 
 
 class TorrentShack(SourceBase):
