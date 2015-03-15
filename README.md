@@ -5,7 +5,7 @@ Supported sites for automatic mode:
 * Cinemageddon (RSS)
 * Cinematik (RSS)
 * GFT (IRC, RSS)
-* HDBits (IRC)
+* HDBits (RSS)
 	* Thanks to cerbere!
 * HD-Torrents (IRC)
 	* Thanks to Mako_1!
