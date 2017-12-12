@@ -240,5 +240,5 @@ class Cinemageddon(SourceBase):
 		else:
 			return result.group( 1 )
 
-	def GetUrlFromId(self, id):
-		return "http://cinemageddon.net/details.php?id=" + id
+	def GetUrlFromId(self, ID):
+		return "http://cinemageddon.net/details.php?id=" + ID
