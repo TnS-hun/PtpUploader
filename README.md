@@ -1,3 +1,9 @@
+# No longer maintained
+
+I do not use this program anymore, so it is no longer maintained. Use [this](https://github.com/kannibalox/PtpUploader) fork instead.
+
+#### Original README
+
 With the PtpUploader's WebUI you can upload to PTP by specifying a torrent file and an IMDb or PTP link.
 There is also an automatic mode built-in that can check announcements from IRC or RSS and upload everything automatically.
 
